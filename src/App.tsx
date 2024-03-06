@@ -1,35 +1,90 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import styled from "styled-components";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <AppContainer>
+      <ContentContainer>
+        <TitleContainer>
+          <Title>My Todo List</Title>
+          <ReactText>React</ReactText>
+        </TitleContainer>
+        <InputForm>
+          <InputContainer>
+            <TitleText>제목</TitleText>
+            <TitleInput />
+            <ContentText>내용</ContentText>
+            <ContentInput />
+          </InputContainer>
+        </InputForm>
+      </ContentContainer>
+    </AppContainer>
+  );
 }
 
-export default App
+export default App;
+
+const AppContainer = styled.div`
+  height: 100vh;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  min-width: 800px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 1px solid gray;
+  height: 50px;
+  width: 100%;
+  padding: 10px;
+`;
+
+const Title = styled.p`
+  font-size: 20px;
+`;
+
+const ReactText = styled.p`
+  font-size: 20px;
+`;
+
+const InputForm = styled.form`
+  display: flex;
+  height: 70px;
+  border-radius: 5px;
+  background-color: lightgray;
+  padding: 10px;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+`;
+const TitleText = styled.p`
+  font-size: 20px;
+`;
+
+const TitleInput = styled.input`
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+`;
+
+const ContentText = styled.p`
+  font-size: 20px;
+`;
+
+const ContentInput = styled.input`
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+`;
