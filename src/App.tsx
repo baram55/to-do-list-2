@@ -15,6 +15,7 @@ function App() {
             <ContentText>내용</ContentText>
             <ContentInput />
           </InputContainer>
+          <AddButton>추가하기</AddButton>
         </InputForm>
       </ContentContainer>
     </AppContainer>
@@ -57,10 +58,12 @@ const ReactText = styled.p`
 
 const InputForm = styled.form`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   height: 70px;
   border-radius: 5px;
   background-color: lightgray;
-  padding: 10px;
+  padding: 20px;
 `;
 
 const InputContainer = styled.div`
@@ -87,4 +90,15 @@ const ContentInput = styled.input`
   border: none;
   border-radius: 5px;
   height: 30px;
+`;
+
+const AddButton = styled.button`
+  color: white;
+  font-size: 20px;
+  width: 150px;
+  height: 35px;
+  background-color: green;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
 `;
