@@ -17,6 +17,34 @@ function App() {
           </InputContainer>
           <AddButton>추가하기</AddButton>
         </InputForm>
+        <TodoContainer>
+          <WorkingContainer>
+            <WorkingTitle>Working..</WorkingTitle>
+            <WorkingList>
+              <WorkingTodoContainer>
+                <WorkingTodoTitle>workingTodo 제목</WorkingTodoTitle>
+                <WorkingTodoContent>workingTodo 내용</WorkingTodoContent>
+                <WorkingButtonContainer>
+                  <WorkingDeleteButton>삭제하기</WorkingDeleteButton>
+                  <WorkingCompleteButton>완료</WorkingCompleteButton>
+                </WorkingButtonContainer>
+              </WorkingTodoContainer>
+            </WorkingList>
+          </WorkingContainer>
+          <DoneContainer>
+            <DoneTitle>Done..</DoneTitle>
+            <DoneList>
+              <DoneTodoContainer>
+                <DoneTodoTitle>DoneTodo 제목</DoneTodoTitle>
+                <DoneTodoContent>DoneTodo 내용</DoneTodoContent>
+                <DoneButtonContainer>
+                  <DoneDeleteButton>삭제하기</DoneDeleteButton>
+                  <DoneCancleButton>취소</DoneCancleButton>
+                </DoneButtonContainer>
+              </DoneTodoContainer>
+            </DoneList>
+          </DoneContainer>
+        </TodoContainer>
       </ContentContainer>
     </AppContainer>
   );
@@ -27,7 +55,6 @@ export default App;
 const AppContainer = styled.div`
   height: 100vh;
   display: flex;
-  /* align-items: center; */
   justify-content: center;
 `;
 
@@ -100,5 +127,124 @@ const AddButton = styled.button`
   background-color: green;
   border-radius: 5px;
   border: none;
+  cursor: pointer;
+`;
+
+const TodoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const WorkingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  gap: 10px;
+`;
+
+const WorkingTitle = styled.p`
+  font-size: 20px;
+`;
+
+const WorkingList = styled.ul`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
+const WorkingTodoContainer = styled.li`
+  display: flex;
+  flex-direction: column;
+  border: 5px green solid;
+  border-radius: 5px;
+  width: 250px;
+  padding: 10px;
+  gap: 20px;
+`;
+
+const WorkingTodoTitle = styled.p`
+  font-size: 20px;
+`;
+
+const WorkingTodoContent = styled.p`
+  font-size: 15px;
+`;
+
+const WorkingButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+`;
+
+const WorkingDeleteButton = styled.button`
+  background-color: white;
+  width: 100%;
+  border: 3px solid red;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
+const WorkingCompleteButton = styled.button`
+  background-color: white;
+  width: 100%;
+  border: 3px solid green;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+//
+const DoneContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  gap: 10px;
+`;
+
+const DoneTitle = styled.p`
+  font-size: 20px;
+`;
+
+const DoneList = styled.ul`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
+const DoneTodoContainer = styled.li`
+  display: flex;
+  flex-direction: column;
+  border: 5px green solid;
+  border-radius: 5px;
+  width: 250px;
+  padding: 10px;
+  gap: 20px;
+`;
+
+const DoneTodoTitle = styled.p`
+  font-size: 20px;
+`;
+
+const DoneTodoContent = styled.p`
+  font-size: 15px;
+`;
+
+const DoneButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+`;
+
+const DoneDeleteButton = styled.button`
+  background-color: white;
+  width: 100%;
+  border: 3px solid red;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
+const DoneCancleButton = styled.button`
+  background-color: white;
+  width: 100%;
+  border: 3px solid green;
+  border-radius: 5px;
   cursor: pointer;
 `;
