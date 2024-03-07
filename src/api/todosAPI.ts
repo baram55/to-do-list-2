@@ -1,19 +1,23 @@
 import { Todo } from "@/types/todoTypes";
 import axios from "axios";
 
+const instance = axios.create({
+  baseURL: import.meta.env.VITE_TEST_SERVER_URL,
+});
+
 export const getTodos = async () => {
-  const { data } = await axios.get<Todo[]>("http://localhost:4000/todos");
+  const { data } = await instance.get<Todo[]>("/todos");
   return data;
 };
 
 export const addTodo = async (newTodo: Todo) => {
-  await axios.post("http://localhost:4000/todos", newTodo);
+  await instance.post("/todos", newTodo);
 };
 
 export const deleteTodo = async (todoId: string) => {
-  await axios.delete(`http://localhost:4000/todos/${todoId}`);
+  await instance.delete(`/todos/${todoId}`);
 };
 
 export const editTodo = async (edit: Todo) => {
-  await axios.patch(`http://localhost:4000/todos/${edit.id}`, edit);
+  await instance.patch(`/todos/${edit.id}`, edit);
 };
