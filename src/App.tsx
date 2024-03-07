@@ -36,36 +36,26 @@ const useInput = (queryClient: QueryClient) => {
   return { title, setTitle, content, setContent, addButtonHandler };
 };
 
-function App() {
-  const { isLoading, isError, data } = useQuery("todos", getTodos);
-  const queryClient = useQueryClient();
-
-  const { title, setTitle, content, setContent, addButtonHandler } =
-    useInput(queryClient);
-
+const useDeleteTodo = (queryClient: QueryClient) => {
   const deleteMutation = useMutation(deleteTodo, {
     onSuccess: () => {
       queryClient.invalidateQueries("todos");
     },
   });
 
+  const deleteButtonHandler = (item: Todo) => {
+    deleteMutation.mutate(item.id);
+  };
+
+  return deleteButtonHandler;
+};
+
+const useEditTodo = (queryClient: QueryClient) => {
   const editMutation = useMutation(editTodo, {
     onSuccess: () => {
       queryClient.invalidateQueries("todos");
     },
   });
-
-  if (isLoading) {
-    return <p>데이터를 불러오는 중입니다.</p>;
-  }
-
-  if (isError) {
-    return <p>데이터를 불러오는데 오류가 발생했습니다.</p>;
-  }
-
-  const deleteButtonHandler = (item: Todo) => {
-    deleteMutation.mutate(item.id);
-  };
 
   const completeButtonHandler = (item: Todo) => {
     editMutation.mutate({ ...item, isDone: true });
@@ -74,6 +64,26 @@ function App() {
   const cancelButtonHandler = (item: Todo) => {
     editMutation.mutate({ ...item, isDone: false });
   };
+
+  return { completeButtonHandler, cancelButtonHandler };
+};
+
+function App() {
+  const { isLoading, isError, data } = useQuery("todos", getTodos);
+  const queryClient = useQueryClient();
+  const { title, setTitle, content, setContent, addButtonHandler } =
+    useInput(queryClient);
+  const deleteButtonHandler = useDeleteTodo(queryClient);
+  const { completeButtonHandler, cancelButtonHandler } =
+    useEditTodo(queryClient);
+
+  if (isLoading) {
+    return <p>데이터를 불러오는 중입니다.</p>;
+  }
+
+  if (isError) {
+    return <p>데이터를 불러오는데 오류가 발생했습니다.</p>;
+  }
 
   return (
     <AppContainer>
