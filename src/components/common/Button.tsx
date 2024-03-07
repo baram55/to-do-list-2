@@ -1,19 +1,33 @@
 import styled from "styled-components";
 import { ButtonType, ButtonUnionType } from "@/types/ButtonType";
-import { ReactNode } from "react";
 
 export const Button = ({
   type,
-  children,
   onClick,
 }: {
   type: ButtonUnionType;
-  children: ReactNode;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }) => {
+  let buttonText = "";
+
+  switch (type) {
+    case ButtonType.ADD:
+      buttonText = "추가하기";
+      break;
+    case ButtonType.DELETE:
+      buttonText = "삭제하기";
+      break;
+    case ButtonType.COMPLETE:
+      buttonText = "완료";
+      break;
+    case ButtonType.CANCEL:
+      buttonText = "취소";
+      break;
+  }
+
   return (
     <StyledButton onClick={(e) => onClick(e)} type={type}>
-      {children}
+      {buttonText}
     </StyledButton>
   );
 };

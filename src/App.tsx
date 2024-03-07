@@ -114,9 +114,7 @@ function App() {
               addButtonHandler(e);
             }}
             type={ButtonType.ADD}
-          >
-            추가하기
-          </Button>
+          />
         </InputForm>
         <TodoContainer>
           <WorkingContainer>
@@ -133,15 +131,11 @@ function App() {
                         <Button
                           type={ButtonType.DELETE}
                           onClick={() => deleteButtonHandler(item)}
-                        >
-                          삭제하기
-                        </Button>
+                        />
                         <Button
                           type={ButtonType.COMPLETE}
                           onClick={() => completeButtonHandler(item)}
-                        >
-                          완료
-                        </Button>
+                        />
                       </WorkingButtonContainer>
                     </WorkingTodoContainer>
                   ))
@@ -164,15 +158,11 @@ function App() {
                         <Button
                           type={ButtonType.DELETE}
                           onClick={() => deleteButtonHandler(item)}
-                        >
-                          삭제하기
-                        </Button>
+                        />
                         <Button
                           type={ButtonType.CANCEL}
                           onClick={() => cancelButtonHandler(item)}
-                        >
-                          취소
-                        </Button>
+                        />
                       </DoneButtonContainer>
                     </DoneTodoContainer>
                   ))
