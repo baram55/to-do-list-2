@@ -14,6 +14,6 @@ export const deleteTodo = async (todoId: string) => {
   await axios.delete(`http://localhost:4000/todos/${todoId}`);
 };
 
-export const editTodo = async (todoId: string, edit: Todo) => {
-  await axios.patch(`http://localhost:4000/todos/${todoId}`, edit);
+export const editTodo = async (edit: Todo) => {
+  await axios.patch(`http://localhost:4000/todos/${edit.id}`, edit);
 };
