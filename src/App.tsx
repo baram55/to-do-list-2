@@ -3,7 +3,7 @@ import { ButtonType } from "@/types/ButtonType";
 import { Button } from "@/components/common/Button";
 import { useState } from "react";
 import { getTodos, addTodo, deleteTodo, editTodo } from "@/api/todosAPI";
-import { QueryClient, useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { v4 as uuidv4 } from "uuid";
 import { Todo } from "./types/todoTypes";
 
@@ -11,7 +11,7 @@ function App() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const { isLoading, isError, data } = useQuery("todos", getTodos);
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const addMutation = useMutation(addTodo, {
     onSuccess: () => {
       queryClient.invalidateQueries("todos");
