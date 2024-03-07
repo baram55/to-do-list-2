@@ -3,20 +3,45 @@ import { ButtonType } from "@/types/ButtonType";
 import { Button } from "@/components/common/Button";
 import { useState } from "react";
 import { getTodos, addTodo, deleteTodo, editTodo } from "@/api/todosAPI";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import { v4 as uuidv4 } from "uuid";
 import { Todo } from "./types/todoTypes";
 
-function App() {
+const useInput = (queryClient: QueryClient) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const { isLoading, isError, data } = useQuery("todos", getTodos);
-  const queryClient = useQueryClient();
   const addMutation = useMutation(addTodo, {
     onSuccess: () => {
       queryClient.invalidateQueries("todos");
     },
   });
+  const addButtonHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (title === "" || content === "")
+      return alert("내용 또는 내용을 입력하세요.");
+
+    addMutation.mutate({
+      id: uuidv4(),
+      title,
+      content,
+      isDone: false,
+    });
+  };
+
+  return { title, setTitle, content, setContent, addButtonHandler };
+};
+
+function App() {
+  const { isLoading, isError, data } = useQuery("todos", getTodos);
+  const queryClient = useQueryClient();
+
+  const { title, setTitle, content, setContent, addButtonHandler } =
+    useInput(queryClient);
 
   const deleteMutation = useMutation(deleteTodo, {
     onSuccess: () => {
@@ -37,18 +62,6 @@ function App() {
   if (isError) {
     return <p>데이터를 불러오는데 오류가 발생했습니다.</p>;
   }
-  const addButtonHandler = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (title === "" || content === "")
-      return alert("내용 또는 내용을 입력하세요.");
-
-    addMutation.mutate({
-      id: uuidv4(),
-      title,
-      content,
-      isDone: false,
-    });
-  };
 
   const deleteButtonHandler = (item: Todo) => {
     deleteMutation.mutate(item.id);
