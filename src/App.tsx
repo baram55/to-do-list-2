@@ -1,76 +1,14 @@
 import styled from "styled-components";
 import { ButtonType } from "@/types/ButtonType";
 import { Button } from "@/components/common/Button";
-import { useState } from "react";
-import { getTodos, addTodo, deleteTodo, editTodo } from "@/api/todosAPI";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "react-query";
-import { v4 as uuidv4 } from "uuid";
-import { Todo } from "./types/todoTypes";
-
-const useInput = (queryClient: QueryClient) => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const addMutation = useMutation(addTodo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("todos");
-    },
-  });
-  const addButtonHandler = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (title === "" || content === "")
-      return alert("내용 또는 내용을 입력하세요.");
-
-    addMutation.mutate({
-      id: uuidv4(),
-      title,
-      content,
-      isDone: false,
-    });
-  };
-
-  return { title, setTitle, content, setContent, addButtonHandler };
-};
-
-const useDeleteTodo = (queryClient: QueryClient) => {
-  const deleteMutation = useMutation(deleteTodo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("todos");
-    },
-  });
-
-  const deleteButtonHandler = (item: Todo) => {
-    deleteMutation.mutate(item.id);
-  };
-
-  return deleteButtonHandler;
-};
-
-const useEditTodo = (queryClient: QueryClient) => {
-  const editMutation = useMutation(editTodo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("todos");
-    },
-  });
-
-  const completeButtonHandler = (item: Todo) => {
-    editMutation.mutate({ ...item, isDone: true });
-  };
-
-  const cancelButtonHandler = (item: Todo) => {
-    editMutation.mutate({ ...item, isDone: false });
-  };
-
-  return { completeButtonHandler, cancelButtonHandler };
-};
+import { getTodos } from "@/api/todosAPI";
+import { useQuery, useQueryClient } from "react-query";
+import { useDeleteTodo, useEditTodo, useInput } from "./hooks/todoHooks";
+import { TodoItem } from "./components/common/TodoItem";
 
 function App() {
-  const { isLoading, isError, data } = useQuery("todos", getTodos);
   const queryClient = useQueryClient();
+  const { isLoading, isError, data } = useQuery("todos", getTodos);
   const { title, setTitle, content, setContent, addButtonHandler } =
     useInput(queryClient);
   const deleteButtonHandler = useDeleteTodo(queryClient);
@@ -124,20 +62,12 @@ function App() {
                 data
                   .filter((item) => item.isDone === false)
                   .map((item) => (
-                    <WorkingTodoContainer>
-                      <WorkingTodoTitle>{item.title}</WorkingTodoTitle>
-                      <WorkingTodoContent>{item.content}</WorkingTodoContent>
-                      <WorkingButtonContainer>
-                        <Button
-                          type={ButtonType.DELETE}
-                          onClick={() => deleteButtonHandler(item)}
-                        />
-                        <Button
-                          type={ButtonType.COMPLETE}
-                          onClick={() => completeButtonHandler(item)}
-                        />
-                      </WorkingButtonContainer>
-                    </WorkingTodoContainer>
+                    <TodoItem
+                      item={item}
+                      type={ButtonType.COMPLETE}
+                      deleteHandler={() => deleteButtonHandler(item)}
+                      editHandler={() => completeButtonHandler(item)}
+                    />
                   ))
               ) : (
                 <p>작업 중인 todo가 없습니다.</p>
@@ -151,20 +81,12 @@ function App() {
                 data
                   .filter((item) => item.isDone === true)
                   .map((item) => (
-                    <DoneTodoContainer>
-                      <DoneTodoTitle>{item.title}</DoneTodoTitle>
-                      <DoneTodoContent>{item.content}</DoneTodoContent>
-                      <DoneButtonContainer>
-                        <Button
-                          type={ButtonType.DELETE}
-                          onClick={() => deleteButtonHandler(item)}
-                        />
-                        <Button
-                          type={ButtonType.CANCEL}
-                          onClick={() => cancelButtonHandler(item)}
-                        />
-                      </DoneButtonContainer>
-                    </DoneTodoContainer>
+                    <TodoItem
+                      item={item}
+                      type={ButtonType.CANCEL}
+                      deleteHandler={() => deleteButtonHandler(item)}
+                      editHandler={() => cancelButtonHandler(item)}
+                    />
                   ))
               ) : (
                 <p>작업이 완료된 todo가 없습니다.</p>
@@ -268,30 +190,6 @@ const WorkingList = styled.ul`
   gap: 10px;
 `;
 
-const WorkingTodoContainer = styled.li`
-  display: flex;
-  flex-direction: column;
-  border: 5px green solid;
-  border-radius: 5px;
-  width: 250px;
-  padding: 10px;
-  gap: 20px;
-`;
-
-const WorkingTodoTitle = styled.h3`
-  font-size: 20px;
-`;
-
-const WorkingTodoContent = styled.p`
-  font-size: 15px;
-`;
-
-const WorkingButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-`;
-
 const DoneContainer = styled.section`
   display: flex;
   flex-direction: column;
@@ -307,28 +205,4 @@ const DoneList = styled.ul`
   display: flex;
   flex-direction: row;
   gap: 10px;
-`;
-
-const DoneTodoContainer = styled.li`
-  display: flex;
-  flex-direction: column;
-  border: 5px green solid;
-  border-radius: 5px;
-  width: 250px;
-  padding: 10px;
-  gap: 20px;
-`;
-
-const DoneTodoTitle = styled.h3`
-  font-size: 20px;
-`;
-
-const DoneTodoContent = styled.p`
-  font-size: 15px;
-`;
-
-const DoneButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
 `;
