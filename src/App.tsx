@@ -1,6 +1,15 @@
 import styled from "styled-components";
+import { ButtonType } from "@/util/ButtonType";
+import { Button } from "@/components/common/Button";
+import { useState } from "react";
 
 function App() {
+  type Todo = { title: string; content: string; isDone: boolean };
+
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const WorkingTodoList: Todo[] = [];
+
   return (
     <AppContainer>
       <ContentContainer>
@@ -11,11 +20,21 @@ function App() {
         <InputForm>
           <InputContainer>
             <TitleText>제목</TitleText>
-            <TitleInput />
+            <TitleInput
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+            />
             <ContentText>내용</ContentText>
-            <ContentInput />
+            <ContentInput
+              value={content}
+              onChange={(e) => {
+                setContent(e.target.value);
+              }}
+            />
           </InputContainer>
-          <AddButton>추가하기</AddButton>
+          <Button type={ButtonType.ADD}>추가하기</Button>
         </InputForm>
         <TodoContainer>
           <WorkingContainer>
@@ -25,8 +44,8 @@ function App() {
                 <WorkingTodoTitle>workingTodo 제목</WorkingTodoTitle>
                 <WorkingTodoContent>workingTodo 내용</WorkingTodoContent>
                 <WorkingButtonContainer>
-                  <WorkingDeleteButton>삭제하기</WorkingDeleteButton>
-                  <WorkingCompleteButton>완료</WorkingCompleteButton>
+                  <Button type={ButtonType.DELETE}>삭제하기</Button>
+                  <Button type={ButtonType.COMPLETE}>완료</Button>
                 </WorkingButtonContainer>
               </WorkingTodoContainer>
             </WorkingList>
@@ -38,8 +57,8 @@ function App() {
                 <DoneTodoTitle>DoneTodo 제목</DoneTodoTitle>
                 <DoneTodoContent>DoneTodo 내용</DoneTodoContent>
                 <DoneButtonContainer>
-                  <DoneDeleteButton>삭제하기</DoneDeleteButton>
-                  <DoneCancleButton>취소</DoneCancleButton>
+                  <Button type={ButtonType.DELETE}>삭제하기</Button>
+                  <Button type={ButtonType.CANCEL}>취소</Button>
                 </DoneButtonContainer>
               </DoneTodoContainer>
             </DoneList>
@@ -119,17 +138,6 @@ const ContentInput = styled.input`
   height: 30px;
 `;
 
-const AddButton = styled.button`
-  color: white;
-  font-size: 20px;
-  width: 150px;
-  height: 35px;
-  background-color: green;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-`;
-
 const TodoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -176,22 +184,6 @@ const WorkingButtonContainer = styled.div`
   gap: 5px;
 `;
 
-const WorkingDeleteButton = styled.button`
-  background-color: white;
-  width: 100%;
-  border: 3px solid red;
-  border-radius: 5px;
-  cursor: pointer;
-`;
-
-const WorkingCompleteButton = styled.button`
-  background-color: white;
-  width: 100%;
-  border: 3px solid green;
-  border-radius: 5px;
-  cursor: pointer;
-`;
-//
 const DoneContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -231,20 +223,4 @@ const DoneButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 5px;
-`;
-
-const DoneDeleteButton = styled.button`
-  background-color: white;
-  width: 100%;
-  border: 3px solid red;
-  border-radius: 5px;
-  cursor: pointer;
-`;
-
-const DoneCancleButton = styled.button`
-  background-color: white;
-  width: 100%;
-  border: 3px solid green;
-  border-radius: 5px;
-  cursor: pointer;
 `;
