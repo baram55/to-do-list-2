@@ -24,7 +24,11 @@ function App() {
     },
   });
 
-  const editMutation = useMutation(editTodo);
+  const editMutation = useMutation(editTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("todos");
+    },
+  });
 
   if (isLoading) {
     return <p>데이터를 불러오는 중입니다.</p>;
@@ -94,7 +98,7 @@ function App() {
             <WorkingList>
               {data ? (
                 data
-                  .filter((item) => item.isDone === true)
+                  .filter((item) => item.isDone === false)
                   .map((item) => (
                     <WorkingTodoContainer>
                       <WorkingTodoTitle>{item.title}</WorkingTodoTitle>
