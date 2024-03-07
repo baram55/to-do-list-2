@@ -2,13 +2,21 @@ import styled from "styled-components";
 import { ButtonType } from "@/util/ButtonType";
 import { Button } from "@/components/common/Button";
 import { useState } from "react";
+import { getTodos } from "@/api/todos";
+import { useQuery } from "react-query";
 
 function App() {
-  type Todo = { title: string; content: string; isDone: boolean };
-
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const WorkingTodoList: Todo[] = [];
+  const { isLoading, isError, data } = useQuery("todos", getTodos);
+
+  if (isLoading) {
+    return <p>로딩중입니다.</p>;
+  }
+
+  if (isError) {
+    return <p>오류가 발생했습니다.</p>;
+  }
 
   return (
     <AppContainer>
@@ -40,27 +48,43 @@ function App() {
           <WorkingContainer>
             <WorkingTitle>Working..</WorkingTitle>
             <WorkingList>
-              <WorkingTodoContainer>
-                <WorkingTodoTitle>workingTodo 제목</WorkingTodoTitle>
-                <WorkingTodoContent>workingTodo 내용</WorkingTodoContent>
-                <WorkingButtonContainer>
-                  <Button type={ButtonType.DELETE}>삭제하기</Button>
-                  <Button type={ButtonType.COMPLETE}>완료</Button>
-                </WorkingButtonContainer>
-              </WorkingTodoContainer>
+              {data ? (
+                data
+                  .filter((item) => item.isDone === true)
+                  .map((item) => (
+                    <WorkingTodoContainer>
+                      <WorkingTodoTitle>{item.title}</WorkingTodoTitle>
+                      <WorkingTodoContent>{item.content}</WorkingTodoContent>
+                      <WorkingButtonContainer>
+                        <Button type={ButtonType.DELETE}>삭제하기</Button>
+                        <Button type={ButtonType.COMPLETE}>완료</Button>
+                      </WorkingButtonContainer>
+                    </WorkingTodoContainer>
+                  ))
+              ) : (
+                <p>작업 중인 todo가 없습니다.</p>
+              )}
             </WorkingList>
           </WorkingContainer>
           <DoneContainer>
             <DoneTitle>Done..</DoneTitle>
             <DoneList>
-              <DoneTodoContainer>
-                <DoneTodoTitle>DoneTodo 제목</DoneTodoTitle>
-                <DoneTodoContent>DoneTodo 내용</DoneTodoContent>
-                <DoneButtonContainer>
-                  <Button type={ButtonType.DELETE}>삭제하기</Button>
-                  <Button type={ButtonType.CANCEL}>취소</Button>
-                </DoneButtonContainer>
-              </DoneTodoContainer>
+              {data ? (
+                data
+                  .filter((item) => item.isDone === true)
+                  .map((item) => (
+                    <DoneTodoContainer>
+                      <DoneTodoTitle>{item.title}</DoneTodoTitle>
+                      <DoneTodoContent>{item.content}</DoneTodoContent>
+                      <DoneButtonContainer>
+                        <Button type={ButtonType.DELETE}>삭제하기</Button>
+                        <Button type={ButtonType.CANCEL}>취소</Button>
+                      </DoneButtonContainer>
+                    </DoneTodoContainer>
+                  ))
+              ) : (
+                <p>작업이 완료된 todo가 없습니다.</p>
+              )}
             </DoneList>
           </DoneContainer>
         </TodoContainer>
