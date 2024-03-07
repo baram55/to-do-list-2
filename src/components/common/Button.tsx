@@ -1,15 +1,21 @@
 import styled from "styled-components";
-import { ButtonType, ButtonUnionType } from "@/util/ButtonType";
+import { ButtonType, ButtonUnionType } from "@/types/ButtonType";
 import { ReactNode } from "react";
 
 export const Button = ({
   type,
   children,
+  onClick,
 }: {
   type: ButtonUnionType;
   children: ReactNode;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
 }) => {
-  return <StyledButton type={type}>{children}</StyledButton>;
+  return (
+    <StyledButton onClick={(e) => onClick(e)} type={type}>
+      {children}
+    </StyledButton>
+  );
 };
 
 const StyledButton = styled.button<{ type: ButtonUnionType }>`

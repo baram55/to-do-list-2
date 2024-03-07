@@ -1,22 +1,48 @@
 import styled from "styled-components";
-import { ButtonType } from "@/util/ButtonType";
+import { ButtonType } from "@/types/ButtonType";
 import { Button } from "@/components/common/Button";
 import { useState } from "react";
-import { getTodos } from "@/api/todos";
-import { useQuery } from "react-query";
+import { getTodos, addTodo, deleteTodo } from "@/api/todosAPI";
+import { QueryClient, useMutation, useQuery } from "react-query";
+import { v4 as uuidv4 } from "uuid";
+import { Todo } from "./types/todoTypes";
 
 function App() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const { isLoading, isError, data } = useQuery("todos", getTodos);
+  const queryClient = new QueryClient();
+  const addMutation = useMutation(addTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("todos");
+    },
+  });
+  const deleteMutation = useMutation(deleteTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("todos");
+    },
+  });
 
   if (isLoading) {
-    return <p>로딩중입니다.</p>;
+    return <p>데이터를 불러오는 중입니다.</p>;
   }
 
   if (isError) {
-    return <p>오류가 발생했습니다.</p>;
+    return <p>데이터를 불러오는데 오류가 발생했습니다.</p>;
   }
+  const addButtonHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addMutation.mutate({
+      id: uuidv4(),
+      title: "제목",
+      content: "내용",
+      isDone: false,
+    });
+  };
+
+  const deleteButtonHandler = (item: Todo) => {
+    deleteMutation.mutate(item.id);
+  };
 
   return (
     <AppContainer>
@@ -42,7 +68,14 @@ function App() {
               }}
             />
           </InputContainer>
-          <Button type={ButtonType.ADD}>추가하기</Button>
+          <Button
+            onClick={(e) => {
+              addButtonHandler(e);
+            }}
+            type={ButtonType.ADD}
+          >
+            추가하기
+          </Button>
         </InputForm>
         <TodoContainer>
           <WorkingContainer>
@@ -56,7 +89,12 @@ function App() {
                       <WorkingTodoTitle>{item.title}</WorkingTodoTitle>
                       <WorkingTodoContent>{item.content}</WorkingTodoContent>
                       <WorkingButtonContainer>
-                        <Button type={ButtonType.DELETE}>삭제하기</Button>
+                        <Button
+                          type={ButtonType.DELETE}
+                          onClick={() => deleteButtonHandler(item)}
+                        >
+                          삭제하기
+                        </Button>
                         <Button type={ButtonType.COMPLETE}>완료</Button>
                       </WorkingButtonContainer>
                     </WorkingTodoContainer>
