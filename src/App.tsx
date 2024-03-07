@@ -39,6 +39,9 @@ function App() {
   }
   const addButtonHandler = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (title === "" || content === "")
+      return alert("내용 또는 내용을 입력하세요.");
+
     addMutation.mutate({
       id: uuidv4(),
       title,
