@@ -179,7 +179,7 @@ const ContentContainer = styled.div`
   min-width: 800px;
 `;
 
-const TitleContainer = styled.div`
+const TitleContainer = styled.header`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -189,7 +189,7 @@ const TitleContainer = styled.div`
   padding: 10px;
 `;
 
-const Title = styled.p`
+const Title = styled.h1`
   font-size: 20px;
 `;
 
@@ -213,7 +213,7 @@ const InputContainer = styled.div`
   align-items: center;
   gap: 10px;
 `;
-const TitleText = styled.p`
+const TitleText = styled.label`
   font-size: 20px;
 `;
 
@@ -223,7 +223,7 @@ const TitleInput = styled.input`
   height: 30px;
 `;
 
-const ContentText = styled.p`
+const ContentText = styled.label`
   font-size: 20px;
 `;
 
@@ -233,7 +233,7 @@ const ContentInput = styled.input`
   height: 30px;
 `;
 
-const TodoContainer = styled.div`
+const TodoContainer = styled.section`
   display: flex;
   flex-direction: column;
 `;
@@ -245,7 +245,7 @@ const WorkingContainer = styled.div`
   gap: 10px;
 `;
 
-const WorkingTitle = styled.p`
+const WorkingTitle = styled.h2`
   font-size: 20px;
 `;
 
@@ -265,7 +265,7 @@ const WorkingTodoContainer = styled.li`
   gap: 20px;
 `;
 
-const WorkingTodoTitle = styled.p`
+const WorkingTodoTitle = styled.h3`
   font-size: 20px;
 `;
 
@@ -279,14 +279,14 @@ const WorkingButtonContainer = styled.div`
   gap: 5px;
 `;
 
-const DoneContainer = styled.div`
+const DoneContainer = styled.section`
   display: flex;
   flex-direction: column;
   margin: 20px;
   gap: 10px;
 `;
 
-const DoneTitle = styled.p`
+const DoneTitle = styled.h2`
   font-size: 20px;
 `;
 
@@ -306,7 +306,7 @@ const DoneTodoContainer = styled.li`
   gap: 20px;
 `;
 
-const DoneTodoTitle = styled.p`
+const DoneTodoTitle = styled.h3`
   font-size: 20px;
 `;
 
