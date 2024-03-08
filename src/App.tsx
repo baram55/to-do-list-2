@@ -2,18 +2,15 @@ import styled from "styled-components";
 import { ButtonType } from "@/types/ButtonType";
 import { Button } from "@/components/common/Button";
 import { getTodos } from "@/api/todosAPI";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { useDeleteTodo, useEditTodo, useInput } from "./hooks/todoHooks";
 import { TodoItem } from "./components/common/TodoItem";
 
 function App() {
-  const queryClient = useQueryClient();
   const { isLoading, isError, data } = useQuery("todos", getTodos);
-  const { title, setTitle, content, setContent, addButtonHandler } =
-    useInput(queryClient);
-  const deleteButtonHandler = useDeleteTodo(queryClient);
-  const { completeButtonHandler, cancelButtonHandler } =
-    useEditTodo(queryClient);
+  const { title, setTitle, content, setContent, addButtonHandler } = useInput();
+  const deleteButtonHandler = useDeleteTodo();
+  const { completeButtonHandler, cancelButtonHandler } = useEditTodo();
 
   if (isLoading) {
     return <p>데이터를 불러오는 중입니다.</p>;

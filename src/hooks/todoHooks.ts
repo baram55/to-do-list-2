@@ -1,10 +1,11 @@
 import { addTodo, deleteTodo, editTodo } from "@/api/todosAPI";
 import { Todo } from "@/types/todoTypes";
 import { useState } from "react";
-import { QueryClient, useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { v4 as uuidv4 } from "uuid";
 
-export const useInput = (queryClient: QueryClient) => {
+export const useInput = () => {
+  const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const addMutation = useMutation(addTodo, {
@@ -28,7 +29,8 @@ export const useInput = (queryClient: QueryClient) => {
   return { title, setTitle, content, setContent, addButtonHandler };
 };
 
-export const useDeleteTodo = (queryClient: QueryClient) => {
+export const useDeleteTodo = () => {
+  const queryClient = useQueryClient();
   const deleteMutation = useMutation(deleteTodo, {
     onSuccess: () => {
       queryClient.invalidateQueries("todos");
@@ -42,7 +44,8 @@ export const useDeleteTodo = (queryClient: QueryClient) => {
   return deleteButtonHandler;
 };
 
-export const useEditTodo = (queryClient: QueryClient) => {
+export const useEditTodo = () => {
+  const queryClient = useQueryClient();
   const editMutation = useMutation(editTodo, {
     onSuccess: () => {
       queryClient.invalidateQueries("todos");
